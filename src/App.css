@@ -1,0 +1,106 @@
+.root {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.heading {
+  display: flex;
+  justify-content: center;
+}
+.lineBreak {
+  border: 1px solid gray;
+}
+.toDoList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10%;
+  padding: 3rem;
+
+  .toDoListColumn {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    border-radius: 2%;
+    border: 1px solid grey;
+    background: ghostwhite;
+    width: 300px;
+    height: 500px;
+    max-height: 500px;
+    overflow: hidden;
+
+    .toDoListColumnHeading {
+      padding: 10px;
+      font-size: 1.25rem;
+      border-bottom: 1px solid gray;
+      overflow: hidden;
+    }
+    .toDoListColumnItems {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .toDoListColumnActions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      margin-top: 1rem;
+
+      .toDoListColumnActionsInput {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        font-size: 1rem;
+        overflow-x: hidden;
+      }
+
+      .toDoListColumnActionsButton {
+        border: 1px solid gray;
+        background-color: black;
+        color: white;
+        font-size: 0.8rem;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+.taskItem {
+  gap: 2px;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 8rem;
+  border-bottom: 1px solid gray;
+
+  .taskItemTitle {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .taskItemDescription {
+    font-size: 1rem;
+    word-wrap: break-word;
+  }
+  .taskItemTimestamp {
+    display: flex;
+    font-size: 0.8rem;
+    justify-content: right;
+  }
+  .taskItemButton {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid gray;
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .toDoList {
+    flex-direction: column;
+    row-gap: 20px;
+    overflow-y: scroll;
+  }
+}
