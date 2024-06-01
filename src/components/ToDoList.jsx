@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TaskItem from "../components/TaskItem";
+import DropArea from "../components/DropArea";
 import { getFormattedDate } from "../common/commonFunctions";
 
 const ToDoList = () => {
@@ -13,6 +14,11 @@ const ToDoList = () => {
     pending: [],
     inprogress: [],
     completed: [],
+  });
+
+  const [activeCard, setActiveCard] = useState({
+    table: null,
+    index: null,
   });
 
   const handleAddToPending = () => {
@@ -61,6 +67,42 @@ const ToDoList = () => {
     });
   };
 
+  const onDrop = (status, index) => {
+    if (!activeCard.table && activeCard.index === null) return;
+
+    const taskToColumn = status;
+    const taskToIndex = index;
+
+    const taskFromColumn = activeCard.table;
+    const taskFromIndex = activeCard.index;
+
+    setData((prev) => {
+      // Create a shallow copy of the previous state
+      const newState = { ...prev };
+
+      // Create deep copies of the columns to ensure immutability
+      const fromColumnTasks = [...newState[taskFromColumn]];
+      const toColumnTasks = [...newState[taskToColumn]];
+
+      // Extract the task from the source column
+      const task = fromColumnTasks[taskFromIndex];
+
+      // Remove the task from the source column
+      fromColumnTasks.splice(taskFromIndex, 1);
+
+      // Insert the task into the destination column
+      toColumnTasks.splice(taskToIndex, 0, task);
+
+      // Update the state with the new columns
+      newState[taskFromColumn] = fromColumnTasks;
+      newState[taskToColumn] = toColumnTasks;
+
+      return newState;
+    });
+
+    setActiveCard({ table: null, index: null });
+  };
+
   return (
     <div className="toDoList">
       <div className="toDoListColumn">
@@ -69,6 +111,7 @@ const ToDoList = () => {
         </div>
 
         <div className="toDoListColumnItems">
+          <DropArea onDrop={() => onDrop("pending", 0)} />
           {data.pending.length !== 0 &&
             data.pending.map((task, index) => (
               <div key={index}>
@@ -77,7 +120,10 @@ const ToDoList = () => {
                   index={index}
                   handleClick={moveToIncomplete}
                   movebuttonText={"Start"}
+                  table={"pending"}
+                  setActiveCard={setActiveCard}
                 />
+                <DropArea onDrop={() => onDrop("pending", index + 1)} />
               </div>
             ))}
         </div>
@@ -141,6 +187,7 @@ const ToDoList = () => {
         </div>
 
         <div className="toDoListColumnItems">
+          <DropArea onDrop={() => onDrop("inprogress", 0)} />
           {data.inprogress.length !== 0 &&
             data.inprogress.map((task, index) => (
               <div key={index}>
@@ -149,8 +196,10 @@ const ToDoList = () => {
                   index={index}
                   handleClick={moveToCompleted}
                   movebuttonText={"Complete"}
+                  table={"inprogress"}
+                  setActiveCard={setActiveCard}
                 />
-
+                <DropArea onDrop={() => onDrop("inprogress", index + 1)} />
                 <div className="lineBreak"></div>
               </div>
             ))}
@@ -161,10 +210,17 @@ const ToDoList = () => {
           Completed: {data.completed.length}
         </div>
         <div className="toDoListColumnItems">
+          <DropArea onDrop={() => onDrop("completed", 0)} />
           {data.completed.length !== 0 &&
             data.completed.map((task, index) => (
               <div key={index}>
-                <TaskItem task={task} />
+                <TaskItem
+                  task={task}
+                  index={index}
+                  setActiveCard={setActiveCard}
+                  table={"completed"}
+                />
+                <DropArea onDrop={() => onDrop("completed", index + 1)} />
               </div>
             ))}
         </div>
