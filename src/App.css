@@ -72,6 +72,7 @@
   overflow-y: auto;
   max-height: 8rem;
   border-bottom: 1px solid gray;
+  cursor: grab;
 
   .taskItemTitle {
     font-size: 1.15rem;
@@ -96,7 +97,19 @@
     font-size: 0.8rem;
   }
 }
-
+.dropArea {
+  padding: 10px;
+  display: flex;
+  height: 50px;
+  background-color: #dcdcdc;
+  opacity: 1;
+  border: 2px solid gray;
+  border: dashed;
+  overflow-x: hidden;
+}
+.dropAreaHide {
+  opacity: 0;
+}
 @media screen and (max-width: 992px) {
   .toDoList {
     flex-direction: column;
